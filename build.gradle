@@ -12,6 +12,12 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 }
 
 repositories {
@@ -22,6 +28,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //	便利機能、ユーティリティ
     implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+//    Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
 //	MySQLドライバー
     runtimeOnly 'com.mysql:mysql-connector-j'
