@@ -1,14 +1,13 @@
 package raisetech.StudentManagement.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +37,9 @@ public class StudentController {
    *
    * @return 受講生一覧（全件）
    */
+  @Operation(summary = "一覧検索", description = "受講生の一覧を検索します。")
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() throws TestException {
+  public List<StudentDetail> getStudentList() {
     return service.searchStudentList();
   }
 
@@ -60,6 +60,7 @@ public class StudentController {
    * @param studentDetail 　受講生詳細
    * @return　実行結果
    */
+  @Operation(summary = "受講生登録", description = "受講生を登録します。")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
       @RequestBody @Valid StudentDetail studentDetail) {
@@ -81,16 +82,6 @@ public class StudentController {
     return ResponseEntity.ok("更新処理が成功しました。");
   }
 
-  /**
-   * エラー処理を実行します。
-   *
-   * @param ex 　エラー内容
-   * @return　エラーメッセージ
-   */
-  @ExceptionHandler(TestException.class)
-  public ResponseEntity<String> handleTestException(TestException ex) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-  }
 
   /**
    * エラー処理の検証用に作成しました。

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import raisetech.StudentManagement.controller.converter.StudentConverter;
+import raisetech.StudentManagement.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
@@ -62,7 +62,7 @@ public class StudentService {
 
     repository.registerStudent(student);
     studentDetail.getStudentCourseList().forEach(studentCourse -> {
-      initStudentsCourse(studentCourse, student);
+      initStudentsCourse(studentCourse, student.getId());
       repository.registerStudentCourse(studentCourse);
     });
     return studentDetail;
@@ -72,12 +72,12 @@ public class StudentService {
    * 受講生コース情報を登録する際の初期情報を設定する。
    *
    * @param studentCourse 　受講生コース情報
-   * @param student       　受講生
+   * @param id            　受講生ID
    */
-  private void initStudentsCourse(StudentCourse studentCourse, Student student) {
+  void initStudentsCourse(StudentCourse studentCourse, String id) {
     LocalDateTime now = LocalDateTime.now();
 
-    studentCourse.setStudentId(student.getId());
+    studentCourse.setStudentId(id);
     studentCourse.setCourseStartAt(now);
     studentCourse.setCourseEndAt(now.plusYears(1));
   }
